@@ -1,4 +1,4 @@
-import { statsCard } from "../src/card/stats.js"
+import { renderStatsCard } from "../src/card/stats.js"
 
 
 async function getStats(callsign) {
@@ -17,7 +17,7 @@ export default async (req, res) => {
   const stats = await getStats(callsign);
 
   return res.send(
-    statsCard(stats, {
+    renderStatsCard(stats, {
 
     }),
   );

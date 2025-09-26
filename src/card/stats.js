@@ -1,8 +1,8 @@
+import { Card } from "../components/Card.js"
 
 
 
-
-const statsCard = (statsobj, options ={}) => {
+const renderStatsCard = (statsobj, options ={}) => {
   const {
     id,
     callsign,
@@ -41,23 +41,22 @@ const statsCard = (statsobj, options ={}) => {
     //})
   //)
 
-  return `
-    <svg width="300" height="130" xmlns="http://www.w3.org/2000/svg" role="img">
-    <style>
-      .header {
-        font: 600 18px 'Segoe UI', Ubuntu, Sans-Serif;
-        fill: none;
-      }
-    </style>
-    <title id="title">${STATS.callsign.value}</title>
-      <rect width="200" height="100" x="10" y="10" rx="20" ry="20" fill="none" />
-      <g><text x="10" y="20">${STATS.callsign.value}</text></g>
-      <g><text x="10" y="35">Activator:</text></g>
-      <g><text x="15" y="50">${STATS.activatorActivations.value}</text></g>
-      <g><text x="15" y="65">${STATS.activatorParks.value}</text></g>
-      <g><text x="15" y="80">${STATS.activatorQSOs.value}</text></g>
+  const card = new Card({
+    title: callsign,
+  });
+
+  return card.render(`
+    <svg x="0" y="0">
+      <g>
+        <text x="20" y="30">${STATS.callsign.value}</text>
+        <text x="20" y="45">Activator:</text>
+        <text x="25" y="60">${STATS.activatorActivations.value}</text>
+        <text x="25" y="75">${STATS.activatorParks.value}</text>
+        <text x="25" y="90">${STATS.activatorQSOs.value}</text>
+      </g>
     </svg>
-  `
+    `);
 }
 
-module.exports = { statsCard }
+export { renderStatsCard };
+export default renderStatsCard;

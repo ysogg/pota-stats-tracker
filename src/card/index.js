@@ -1,1 +1,1 @@
-export { statsCard } from "./stats.js"
+export { renderStatsCard } from "./stats.js"
