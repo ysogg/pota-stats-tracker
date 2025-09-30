@@ -1,5 +1,8 @@
 import { Card } from "../components/Card.js"
 
+const DEFAULT_WIDTH = 467;
+const DEFAULT_HEIGHT = 170;
+
 const createTextNode = ({
   index,
   name,
@@ -35,6 +38,11 @@ const renderStatsCard = (statsobj, options ={}) => {
     name,
     stats,
   } = statsobj;
+  const {
+    view,
+    card_width,
+    card_height,
+  } = options;
 
   const STATS = {};
 
@@ -50,7 +58,7 @@ const renderStatsCard = (statsobj, options ={}) => {
 
   STATS.activatorParks = {
     value: stats.activator.parks,
-    id: "activatorParks",
+     id: "activatorParks",
   };
 
   STATS.activatorQSOs = {
@@ -85,9 +93,16 @@ const renderStatsCard = (statsobj, options ={}) => {
 
   const cssStyles = getStyles();
 
+  let width = DEFAULT_WIDTH;
+  let height = DEFAULT_HEIGHT;
+  if (view == "simple") {
+    width = 400;
+    height = 130;
+  }
+
   const card = new Card({
-    width: 467,
-    height: 170,
+    width: width,
+    height: height,
     title: callsign,
   });
 

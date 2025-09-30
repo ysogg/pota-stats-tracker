@@ -11,6 +11,9 @@ async function getStats(callsign) {
 export default async (req, res) => {
   const {
     callsign,
+    view,
+    card_width,
+    card_height,
   } = req.query;
   res.setHeader("Content-Type", "image/svg+xml");
   
@@ -18,7 +21,9 @@ export default async (req, res) => {
 
   return res.send(
     renderStatsCard(stats, {
-
+      view: view,
+      card_width: card_width,
+      card_height: card_height,
     }),
   );
 }
