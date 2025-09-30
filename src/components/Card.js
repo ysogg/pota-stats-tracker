@@ -35,8 +35,8 @@ class Card {
           height="99%"
           x="0.5"
           y="0.5"
-          rx="10"
-          ry="10"
+          rx="3"
+          ry="3"
           stroke="black"
           fill="white"
         />

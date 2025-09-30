@@ -4,7 +4,7 @@ import { renderStatsCard } from "../src/card/stats.js"
 async function getStats(callsign) {
   let resp = await fetch("https://api.pota.app/profile/" + callsign);
   let data = await resp.json();
-  //console.log(data);
+  console.log(data);
   return data;
 }
 

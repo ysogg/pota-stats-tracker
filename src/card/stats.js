@@ -4,15 +4,16 @@ const createTextNode = ({
   index,
   name,
   activatorValue,
+  attemptValue,
   hunterValue,
 }) => {
   const delay = (index + 3) * 150;
 
   return `
     <g class="stagger" style="animation-delay: ${delay}ms" transform="translate(25,0)">
-      <text x="0" y="${45 + index * 20}">${name}</text>
-      <text x="100" y="${45 + index * 20}">${activatorValue}</text>
-      <text x="200" y="${45 + index * 20}">${hunterValue}</text>
+      <text x="0" y="${45 + (index+1) * 20}">${name}</text>
+      <text x="110" y="${45 + (index+1) * 20}">${activatorValue} / ${attemptValue}</text>
+      <text x="250" y="${45 + (index+1) * 20}">${hunterValue}</text>
     </g>
   `;
 }
@@ -52,35 +53,35 @@ const renderStatsCard = (statsobj, options ={}) => {
     id: "activatorParks",
   };
 
-  STATS.hunterParks = {
-    value: stats.hunter.parks,
-    id: "hunterParks",
-  };
-
   STATS.activatorQSOs = {
     value: stats.activator.qsos,
     id: "activatorQSOs",
+  };
+
+  STATS.activationAttempts = {
+    value: stats.attempts.activations,
+    id: "activationAttempts",
+  }
+
+  STATS.parkAttempts = {
+    value: stats.attempts.parks,
+    id: "parkAttempts",
+  }
+
+  STATS.qsoAttempts = {
+    value: stats.attempts.qsos,
+    id: "qsoAttempts",
+  }
+
+   STATS.hunterParks = {
+    value: stats.hunter.parks,
+    id: "hunterParks",
   };
 
   STATS.hunterQSOs = {
     value: stats.activator.qsos,
     id: "activatorQSOs",
   };
-/*
-  for (let i = 0; i < 3; i++) {
-    switch(i) {
-      case 0:
-        createTextNode(index: 0, name: "Activations", activatorValue: STATS.activatorActivations, hunterValue: STATS.hunterActivations);
-        break;
-      case 1:
-        createTextNode(index: 1, name: "Parks", activatorValue: STATS.activatorParks, hunterValue: STATS.hunterParks);
-        break;
-      case 2:
-        createTextNode(index: 2, name: "QSOs", activatorValue: STATS.activatorQSOs, hunterValue: STATS.hunterQSOs);
-        break;
-    }
-  }
-*/
 
   const cssStyles = getStyles();
 
@@ -94,9 +95,13 @@ const renderStatsCard = (statsobj, options ={}) => {
 
   return card.render(`
     <svg x="0" y="0">
-        ${createTextNode({index: 0, name: "Activations", activatorValue: STATS.activatorActivations.value, hunterValue: "---"})}
-        ${createTextNode({index: 1, name: "Parks", activatorValue: STATS.activatorParks.value, hunterValue: STATS.hunterParks.value})}
-        ${createTextNode({index: 2, name: "QSOs", activatorValue: STATS.activatorQSOs.value, hunterValue: STATS.hunterQSOs.value})}
+      <g> 
+        <text x="135" y="45">Activator</text>
+        <text x="275" y="45">Hunter</text>
+      </g>
+        ${createTextNode({index: 0, name: "Activations", activatorValue: STATS.activatorActivations.value, attemptValue: STATS.activationAttempts.value, hunterValue: "---"})}
+        ${createTextNode({index: 1, name: "Parks", activatorValue: STATS.activatorParks.value, attemptValue: STATS.parkAttempts.value, hunterValue: STATS.hunterParks.value})}
+        ${createTextNode({index: 2, name: "QSOs", activatorValue: STATS.activatorQSOs.value, attemptValue: STATS.qsoAttempts.value, hunterValue: STATS.hunterQSOs.value})}
     </svg>
     `);
 }
