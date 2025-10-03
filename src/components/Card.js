@@ -41,7 +41,7 @@ class Card {
           fill="white"
         />
 
-        <text x="20" y="30" class="header">${this.title}</text>
+        <text x="25" y="30" class="header">${this.title}</text>
 
         <g>
           ${body}

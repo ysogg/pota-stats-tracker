@@ -14,9 +14,10 @@ const createTextNode = ({
 
   return `
     <g class="stagger" style="animation-delay: ${delay}ms" transform="translate(25,0)">
-      <text x="0" y="${45 + (index+1) * 20}">${name}</text>
-      <text x="110" y="${45 + (index+1) * 20}">${activatorValue} / ${attemptValue}</text>
-      <text x="250" y="${45 + (index+1) * 20}">${hunterValue}</text>
+      <line x1="0" y1="${51 + (index) * 30}" x2="310" y2="${51 + (index) * 30}" style="stroke:gray;stroke-width:1" />
+      <text x="0" y="${42 + (index+1) * 30}">${name}</text>
+      <text x="120" y="${42 + (index+1) * 30}">${activatorValue} / ${attemptValue}</text>
+      <text x="260" y="${42 + (index+1) * 30}">${hunterValue}</text>
     </g>
   `;
 }
@@ -97,7 +98,7 @@ const renderStatsCard = (statsobj, options ={}) => {
   let height = DEFAULT_HEIGHT;
   if (view == "simple") {
     width = 400;
-    height = 130;
+    height = 150;
   }
 
   const card = new Card({
@@ -111,8 +112,8 @@ const renderStatsCard = (statsobj, options ={}) => {
   return card.render(`
     <svg x="0" y="0">
       <g> 
-        <text x="135" y="45">Activator</text>
-        <text x="275" y="45">Hunter</text>
+        <text x="145" y="45">Activator</text>
+        <text x="285" y="45">Hunter</text>
       </g>
         ${createTextNode({index: 0, name: "Activations", activatorValue: STATS.activatorActivations.value, attemptValue: STATS.activationAttempts.value, hunterValue: "---"})}
         ${createTextNode({index: 1, name: "Parks", activatorValue: STATS.activatorParks.value, attemptValue: STATS.parkAttempts.value, hunterValue: STATS.hunterParks.value})}
