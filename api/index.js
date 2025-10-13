@@ -14,6 +14,14 @@ export default async (req, res) => {
     view,
     card_width,
     card_height,
+    showTiers,
+    showBadges,
+    showRecognition,
+    showRecentActivator,
+    showRecentHunter,
+    badgeOne,
+    badgeTwo,
+    badgeThree,
   } = req.query;
   res.setHeader("Content-Type", "image/svg+xml");
   
@@ -24,6 +32,14 @@ export default async (req, res) => {
       view: view,
       card_width: card_width,
       card_height: card_height,
+      showTiers: showTiers,
+      showBadges: showBadges,
+      showRecognition: showRecognition,
+      showRecentActivator: showRecentActivator,
+      showRecentHunter: showRecentHunter,
+      badgeOne: badgeOne,
+      badgeTwo: badgeTwo,
+      badgeThree: badgeThree,
     }),
   );
 }
