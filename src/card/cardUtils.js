@@ -1,7 +1,7 @@
 const displayTiers = (activator, hunter, view = "default") => {
   if (view == "default") {
     return `
-      <g><text x="50" y="50">TEST</text></g>
+      <g><text x="50" y="50"></text></g>
     `;
   } else {
     return ``;

@@ -21,35 +21,58 @@ const createTextNode = ({
   view = "default",
 }) => {
   if (view == "default") {
-    return `
-      <text x="0" y="42">test</text>
+    let header = `
+      <g class="line" style="font-size: 12px" transform="translate(0, 0)">
+        <text x="100" y="12.5">Activations</text>
+        <text x="203" y="12.5">Parks</text>
+        <text x="306" y="12.5">QSOs</text>
+        <line x1="0" y1="17" x2="400" y2="17" style="stroke:gray;stroke-width:1" />
+      </g>
     `;
+    return `
+      ${header}
+      <g class="line" transform="translate(0, 20)">
+        <text x="0" y="12.5">Activator</text>
+        <text x="100" y="12.5">${activations} / ${attemptedActivations}</text>
+        <text x="203" y="12.5">${activatorParks} / ${attemptedParks}</text>
+        <text x="306" y="12.5">${activatorQSOs} / ${attemptedQSOs}</text>
+      </g>
+      <g class="line" transform="translate(0, 40)">
+        <line x1="0" y1="-2" x2="400" y2="-2" style="stroke:gray;stroke-width:1" />
+        <text x="0" y="12.5">Hunter</text>
+        <text x="100" y="12.5">---</text>
+        <text x="203" y="12.5">${hunterParks}</text>
+        <text x="306" y="12.5">${hunterQSOs}</text>
+      </g>
+      `;
   } else {
     let header = `
-        <g> 
-          <text x="145" y="45">Activator</text>
-          <text x="285" y="45">Hunter</text>
+        <g class="line" style="font-size: 12px" transform="translate(0, 0)"> 
+          <text x="120" y="12.5">Activator</text>
+          <text x="260" y="12.5">Hunter</text>
+          <line x1="0" y1="17" x2="310" y2="17" style="stroke:gray;stroke-width:1" />
         </g>
       `;
     
-    //stagger not set up currently but there so I remember
+
     return `
       ${header}
-      <g class="stagger" style="animation-delay: $({0 + 3) * 150y}ms" transform="translate(25,0)"> 
-        <line x1= "0" y1="51" x2="310" y2="51" style="stroke:gray;stroke-width:1" />
-        <text x="0" y="72">Activations</text>
-        <text x="120" y="72">${activations} / ${attemptedActivations}</text>
-        <text x="260" y="72">---</text>
-
-        <line x1="0" y1="81" x2="310" y2="81" style="stroke:gray;stroke-width:1" />
-        <text x="0" y="102">Parks</text>
-        <text x="120" y="102">${activatorParks} / ${attemptedParks}</text>
-        <text x="260" y="102">${hunterParks}</text>
-        
-        <line x1="0" y1="111" x2="310" y2="111" style="stroke:gray;stroke-width:1" />
-        <text x="0" y="132">QSOs</text>
-        <text x="120" y="132">${activatorQSOs} / ${attemptedQSOs}</text>
-        <text x="260" y="132">${hunterQSOs}</text>
+      <g class="line" transform="translate(0,20)"> 
+          <text x="0" y="12.5">Activations</text>
+          <text x="120" y="12.5">${activations} / ${attemptedActivations}</text>
+          <text x="260" y="12.5">---</text>
+        </g>
+      <g class="line" transform="translate(0,40)">
+        <line x1="0" y1="-2" x2="310" y2="-2" style="stroke:gray;stroke-width:1" />
+        <text x="0" y="12.5">Parks</text>
+        <text x="120" y="12.5">${activatorParks} / ${attemptedParks}</text>
+        <text x="260" y="12.5">${hunterParks}</text>
+      </g>
+      <g class="line" transform="translate(0,60)">
+        <line x1="0" y1="-2" x2="310" y2="-2" style="stroke:gray;stroke-width:1" />
+        <text x="0" y="12.5">QSOs</text>
+        <text x="120" y="12.5">${activatorQSOs} / ${attemptedQSOs}</text>
+        <text x="260" y="12.5">${hunterQSOs}</text>
       </g>
     `;
   }
@@ -57,9 +80,8 @@ const createTextNode = ({
 
 const getStyles =() => {
   return `
-    .stagger {
-      opacity: 100;
-      animation: fadeInAnimation 0.3s ease-in-out forwards;
+    .line {
+      font: 600 14px 'Segoe UI', Ubuntu, "Helvetica Neue", Sans-Serif;
     }
   `;
 }
@@ -86,53 +108,6 @@ const renderStatsCard = (statsobj, options ={}) => {
     badgeThree,
   } = options;
 
-  const STATS = {};
-
-  STATS.callsign = {
-    value: callsign,
-    id: "callsign",
-  };
-
-  STATS.activatorActivations = {
-    value: stats.activator.activations,
-    id: "activatorActivations",
-  };
-
-  STATS.activatorParks = {
-    value: stats.activator.parks,
-     id: "activatorParks",
-  };
-
-  STATS.activatorQSOs = {
-    value: stats.activator.qsos,
-    id: "activatorQSOs",
-  };
-
-  STATS.activationAttempts = {
-    value: stats.attempts.activations,
-    id: "activationAttempts",
-  }
-
-  STATS.parkAttempts = {
-    value: stats.attempts.parks,
-    id: "parkAttempts",
-  }
-
-  STATS.qsoAttempts = {
-    value: stats.attempts.qsos,
-    id: "qsoAttempts",
-  }
-
-   STATS.hunterParks = {
-    value: stats.hunter.parks,
-    id: "hunterParks",
-  };
-
-  STATS.hunterQSOs = {
-    value: stats.activator.qsos,
-    id: "activatorQSOs",
-  };
-
 
   //let awards = formatAwards({awards: stats.awards, view: view});
   let tiers = formatTiers({awards: stats.awards, view: view});
@@ -142,7 +117,7 @@ const renderStatsCard = (statsobj, options ={}) => {
   let width = DEFAULT_WIDTH;
   let height = DEFAULT_HEIGHT;
   if (view == "simple") {
-    width = 400;
+    width = 380;
     height = 150;
   }
 

@@ -7,6 +7,8 @@ class Card {
     this.width = width;
     this.height = height;
     this.title = title;
+    this.paddingX = 25;
+    this.paddingY = 35;
 
     this.css = "";
   }
@@ -15,11 +17,13 @@ class Card {
     this.css = value;
   }
 
+
   render(body) {
     return `
       <svg
         width="${this.width}"
         height="${this.height}"
+        viewBox="0 0 ${this.width} ${this.height}"
         xmlns="http://www.w3.org/2000/svg"
         role="img"
       >
@@ -35,15 +39,18 @@ class Card {
           height="99%"
           x="0.5"
           y="0.5"
-          rx="3"
-          ry="3"
+          rx="4.5"
+          ry="4.5"
           stroke="black"
           fill="white"
         />
 
-        <text x="25" y="30" class="header">${this.title}</text>
+        
+        <g transform="translate(${this.paddingX}, ${this.paddingY})">
+          <text x="0" y="0" class="header">${this.title}</text>
+        </g>
 
-        <g>
+        <g transform="translate(${this.paddingX}, 35)">
           ${body}
         </g>
       </svg>
