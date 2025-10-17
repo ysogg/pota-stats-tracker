@@ -4,7 +4,7 @@ import { formatAwards, formatTiers } from "./cardUtils.js"
 const DEFAULT_WIDTH = 467;
 const DEFAULT_HEIGHT = 170;
 
-//rejig this to only be called once and just create the text node properly
+
 //if showTiers is true then we want to adjust by a little offset as well so before it gets called
 //define offset somewhere and pass it in as a parameter
 const createTextNode = ({
