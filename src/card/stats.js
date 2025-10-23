@@ -3,6 +3,7 @@ import { formatAwards, formatTiers } from "./cardUtils.js"
 
 const DEFAULT_WIDTH = 467;
 const DEFAULT_HEIGHT = 170;
+const DEFAULT_PADDING = 22;
 
 
 //if showTiers is true then we want to adjust by a little offset as well so before it gets called
@@ -22,53 +23,54 @@ const createTextNode = ({
 }) => {
   if (view == "default") {
     let header = `
-      <g class="line" style="font-size: 12px" transform="translate(0, 0)">
+      <g class="row" style="font-size: 12px" transform="translate(${offset}, 0)">
         <text x="100" y="12.5">Activations</text>
         <text x="203" y="12.5">Parks</text>
         <text x="306" y="12.5">QSOs</text>
+      </g>
+      <g>
         <line x1="0" y1="17" x2="400" y2="17" style="stroke:gray;stroke-width:1" />
       </g>
     `;
     return `
       ${header}
-      <g class="line" transform="translate(0, 20)">
+      <g class="row" transform="translate(${offset}, 25)">
         <text x="0" y="12.5">Activator</text>
         <text x="100" y="12.5">${activations} / ${attemptedActivations}</text>
         <text x="203" y="12.5">${activatorParks} / ${attemptedParks}</text>
         <text x="306" y="12.5">${activatorQSOs} / ${attemptedQSOs}</text>
       </g>
-      <g class="line" transform="translate(0, 40)">
-        <line x1="0" y1="-2" x2="400" y2="-2" style="stroke:gray;stroke-width:1" />
+     
+      <g class="row" transform="translate(${offset}, 50)">
         <text x="0" y="12.5">Hunter</text>
-        <text x="100" y="12.5">---</text>
+        <text x="100" y="12.5">N/A</text>
         <text x="203" y="12.5">${hunterParks}</text>
         <text x="306" y="12.5">${hunterQSOs}</text>
       </g>
       `;
   } else {
     let header = `
-        <g class="line" style="font-size: 12px" transform="translate(0, 0)"> 
+        <g class="row" style="font-size: 12px" transform="translate(0, 0)"> 
           <text x="120" y="12.5">Activator</text>
           <text x="260" y="12.5">Hunter</text>
           <line x1="0" y1="17" x2="310" y2="17" style="stroke:gray;stroke-width:1" />
         </g>
       `;
     
-
     return `
       ${header}
-      <g class="line" transform="translate(0,20)"> 
+      <g class="row" transform="translate(0,20)"> 
           <text x="0" y="12.5">Activations</text>
           <text x="120" y="12.5">${activations} / ${attemptedActivations}</text>
           <text x="260" y="12.5">---</text>
         </g>
-      <g class="line" transform="translate(0,40)">
+      <g class="row" transform="translate(0,40)">
         <line x1="0" y1="-2" x2="310" y2="-2" style="stroke:gray;stroke-width:1" />
         <text x="0" y="12.5">Parks</text>
         <text x="120" y="12.5">${activatorParks} / ${attemptedParks}</text>
         <text x="260" y="12.5">${hunterParks}</text>
       </g>
-      <g class="line" transform="translate(0,60)">
+      <g class="row" transform="translate(0,60)">
         <line x1="0" y1="-2" x2="310" y2="-2" style="stroke:gray;stroke-width:1" />
         <text x="0" y="12.5">QSOs</text>
         <text x="120" y="12.5">${activatorQSOs} / ${attemptedQSOs}</text>
@@ -80,7 +82,7 @@ const createTextNode = ({
 
 const getStyles =() => {
   return `
-    .line {
+    .row {
       font: 600 14px 'Segoe UI', Ubuntu, "Helvetica Neue", Sans-Serif;
     }
   `;
@@ -116,9 +118,11 @@ const renderStatsCard = (statsobj, options ={}) => {
 
   let width = DEFAULT_WIDTH;
   let height = DEFAULT_HEIGHT;
+  let padding = DEFAULT_PADDING;
   if (view == "simple") {
     width = 380;
     height = 150;
+    padding = 0;
   }
 
   const card = new Card({
@@ -142,6 +146,7 @@ const renderStatsCard = (statsobj, options ={}) => {
           attemptedQSOs: stats.attempts.qsos,
           hunterQSOs: stats.hunter.qsos,
           view: view,
+          offset: padding,
         })}
 
         ${tiers}
