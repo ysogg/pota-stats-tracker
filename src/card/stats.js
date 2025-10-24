@@ -3,7 +3,8 @@ import { formatAwards, formatTiers } from "./cardUtils.js"
 
 const DEFAULT_WIDTH = 467;
 const DEFAULT_HEIGHT = 170;
-const DEFAULT_PADDING = 22;
+const ICON_PADDING = 22;
+const DEFAULT_PADDING = 0;
 
 
 //if showTiers is true then we want to adjust by a little offset as well so before it gets called
@@ -19,9 +20,9 @@ const createTextNode = ({
   attemptedParks,
   attemptedQSOs,
   offset,
-  view = "default",
+  view,
 }) => {
-  if (view == "default") {
+  if (view == "multi") {
     let header = `
       <g class="row" style="font-size: 12px" transform="translate(${offset}, 0)">
         <text x="100" y="12.5">Activations</text>
@@ -48,7 +49,7 @@ const createTextNode = ({
         <text x="306" y="12.5">${hunterQSOs}</text>
       </g>
       `;
-  } else {
+  } else if (view == "simple") {
     let header = `
         <g class="row" style="font-size: 12px" transform="translate(0, 0)"> 
           <text x="120" y="12.5">Activator</text>
@@ -77,7 +78,45 @@ const createTextNode = ({
         <text x="260" y="12.5">${hunterQSOs}</text>
       </g>
     `;
-  }
+  } else {
+    //probably better to switch this one to the mapping to rows approach so hiding specific rows is easier
+      return `
+        <g class="row" transform="translate(${offset}, 15)">
+          <text x="0" y="12.5">Total QSOs:</text>
+          <text x="150" y="12.5">${activatorQSOs + hunterQSOs}"</text>
+        </g>
+        <g class="row" transform="translate(${offset}, 40)">
+          <text x="0" y="12.5">Activations:</text>
+          <text x="150" y="12.5">${activations} / ${attemptedActivations}</text>
+        </g>
+        <g class="row" transform="translate(${offset}, 65)">
+          <text x="0" y="12.5">Activator QSOs:</text>
+          <text x="150" y="12.5">${activatorQSOs}</text>
+        </g>
+        <g class="row" transform="translate(${offset}, 90)">
+            <text x="0" y="12.5">Hunter QSOs:</text>
+            <text x="150" y="12.5">${hunterQSOs}</text>
+        </g>
+        <g class="row" transform="translate(${offset}, 90)">
+            <text x="0" y="12.5">Hunter QSOs:</text>
+            <text x="150" y="12.5">${hunterQSOs}</text>
+        </g>
+      `;
+    }
+}
+
+const createDefaultTextNode = ({
+  value,
+  label,
+  index,
+  offset,
+}) => {
+  return `
+    <g class="row" transform="translate(${offset}, ${15 + (index * 25)})">
+      <text x="0" y="12.5">${label}:</text>
+      <text x="150" y="12.5">${value}</text>
+    </g>
+  `;
 }
 
 const getStyles =() => {
@@ -98,57 +137,102 @@ const renderStatsCard = (statsobj, options ={}) => {
   } = statsobj;
   const {
     view,
+    hide = [],
     card_width,
     card_height,
-    showTiers,
-    showBadges,
-    showRecognition,
-    showRecentActivator,
-    showRecentHunter,
-    badgeOne,
-    badgeTwo,
-    badgeThree,
+    show_tiers,
+    show_badges,
+    show_recognition,
+    show_recentActivator,
+    show_recentHunter,
+    badge_one,
+    badge_two,
+    badge_three,
   } = options;
 
-
-  //let awards = formatAwards({awards: stats.awards, view: view});
-  let tiers = formatTiers({awards: stats.awards, view: view});
+  const STATS = {};
+  STATS.totalQSOs = {
+    value: stats.activator.qsos + stats.hunter.qsos,
+    label: "Total QSOs",
+    id: "totalQSOs",
+  }
+  STATS.activations = {
+    value: stats.activator.activations +" / "+stats.attempts.activations,
+    label: "Activations",
+    id: "activations",
+  }
+  STATS.activatorQSOs = {
+    value: stats.activator.qsos,
+    label: "Activator QSOs",
+    id: "activatorQSOs",
+  }
+  STATS.hunterQSOs = {
+    value: stats.hunter.qsos,
+    label: "Hunter QSOs",
+    id: "hunterQSOs",
+  }
 
   const cssStyles = getStyles();
-
+  
   let width = DEFAULT_WIDTH;
   let height = DEFAULT_HEIGHT;
   let padding = DEFAULT_PADDING;
   if (view == "simple") {
     width = 380;
     height = 150;
-    padding = 0;
+  }
+
+  let tiers = ``;
+  if (show_tiers === true && view != "simple") {
+      tiers = formatTiers({awards: stats.awards, view: view});
+      padding = ICON_PADDING;
   }
 
   const card = new Card({
     width: width,
     height: height,
     title: callsign,
-    //awards: awards,
   });
 
   card.setCSS(cssStyles);
 
+  const mapStats = () => {
+    const rows = Object.keys(STATS)
+      .filter((key) => !hide.includes(key))
+      .map((key, index) => {
+        const stats = STATS[key];
+
+        // create the text nodes, and pass index so that we can calculate the line spacing
+        return createDefaultTextNode({
+          //icon: stats.icon,
+          //showIcons: show_icons,
+          value: stats.value,
+          label: stats.label,
+          index,
+          offset: padding,
+        });
+      });
+    return rows;
+  }
+  
+  let content = view == "default" ? 
+    mapStats() : 
+    createTextNode({
+        activations: stats.activator.activations, 
+        attemptedActivations: stats.attempts.activations,
+        activatorParks: stats.activator.parks,
+        attemptedParks: stats.attempts.parks,
+        hunterParks: stats.hunter.parks,
+        activatorQSOs: stats.activator.qsos,
+        attemptedQSOs: stats.attempts.qsos,
+        hunterQSOs: stats.hunter.qsos,
+        view: view,
+        offset: padding,
+    }); 
+
   return card.render(`
     <svg x="0" y="0">
-      ${createTextNode({
-          activations: stats.activator.activations, 
-          attemptedActivations: stats.attempts.activations,
-          activatorParks: stats.activator.parks,
-          attemptedParks: stats.attempts.parks,
-          hunterParks: stats.hunter.parks,
-          activatorQSOs: stats.activator.qsos,
-          attemptedQSOs: stats.attempts.qsos,
-          hunterQSOs: stats.hunter.qsos,
-          view: view,
-          offset: padding,
-        })}
-
+        ${content}
         ${tiers}
     </svg>
     `);

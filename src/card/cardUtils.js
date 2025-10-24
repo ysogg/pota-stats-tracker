@@ -5,12 +5,14 @@ const activatorIcon = `<path d="M3.41 2.476a.75.75 0 01-.013 1.06A6.235 6.235 0 
 
 const hunterIcon = `<line id="secondary-upstroke" x1="11.95" y1="12" x2="12.05" y2="12" style="fill: none; stroke: rgb(44, 169, 188); stroke-linecap: round; stroke-linejoin: round; stroke-width: 2;"></line><path id="primary" d="M21,12a9,9,0,1,1-9-9A9,9,0,0,1,21,12Zm-4,0a5,5,0,1,0-5,5A5,5,0,0,0,17,12Z" style="fill: none; stroke: rgb(0, 0, 0); stroke-linecap: round; stroke-linejoin: round; stroke-width: 2;"></path>`
 
-const displayTiers = (activator, hunter, view = "default") => {
-  if (view == "default") {
+const displayTiers = (activator, hunter, view) => {
+  if (view == "multi") {
       return `
       <g stroke="black" stroke-width="1" transform="scale(1), translate(1,25)">${activatorIcon}</g>
       <g fill="#f76157" stroke="black" stroke-width="3" transform="scale(0.9), translate(-2, 52)">${hunterIcon}</g>
     `;
+  } else if (view == "simple") {
+    return ``;
   } else {
     return ``;
   }
