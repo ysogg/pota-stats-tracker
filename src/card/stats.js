@@ -1,5 +1,6 @@
 import { Card } from "../components/Card.js"
-import { formatAwards, formatTiers } from "./cardUtils.js"
+import { Rank } from "../components/RankCircle.js"
+import { formatTiers } from "./cardUtils.js"
 
 const DEFAULT_WIDTH = 467;
 const DEFAULT_HEIGHT = 170;
@@ -230,12 +231,43 @@ const renderStatsCard = (statsobj, options ={}) => {
         offset: padding,
     }); 
 
-  return card.render(`
-    <svg x="0" y="0">
+
+  if (view == "default") {
+    const rank = new Rank({
+      width: width,
+      paddingX: 280,
+      paddingY: 48,
+      rank: "A",
+      colour: "black",
+      percentage: 200, //
+    });
+
+    return card.render(`
+      <svg x="0" y="0">
+        ${rank.render(``)};
         ${content}
         ${tiers}
-    </svg>
+      </svg>
+      `);
+  } else if (view == "multi") {
+    const leftRank = new Rank({});
+    const midRank = new Rank({});
+    const rightRank = new Rank({});
+
+    return card.render(`
+      <svg x="0" y="0">
+        ${content}
+        ${tiers}
+      </svg>
+      `);
+  } else {
+    return card.render(`
+      <svg x="0" y="0">
+        ${content}
+        ${tiers}
+      </svg>
     `);
+  }
 }
 
 export { renderStatsCard };
