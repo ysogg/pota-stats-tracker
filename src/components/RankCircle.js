@@ -58,6 +58,9 @@ class Rank {
         role="img"
       >
         <style>
+          .rankText {
+            font: 800 24px 'Segoe UI', Ubuntu, "Helvetica Neue", Sans-Serif;
+          }
           .outerCircle {
             stroke: ${this.colour};
             fill: none;
@@ -83,8 +86,8 @@ class Rank {
         <g transform="translate(${this.paddingX}, ${this.paddingY})">
           <circle class="outerCircle" cx="10" cy="8" r="40"/>
           <circle class="innerCircle" cx="10" cy="8" r="40"/>
-          <g class="rank">
-            ${rank.level}
+          <g class="rankText">
+            <text x="0" y="15">${rank.level}</text>
           </g>
         </g>
       </svg>
