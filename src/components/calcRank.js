@@ -2,8 +2,6 @@ function exponential_cdf(x) {
   return 1 - 2 ** -x;
 }
 
-//Currently only calculates the weighted average of everything as rank
-//Plan to expand this to also do some per-metric stat rankings for multi-view
 function calcRank({
   activations,
   activatorQSOs,
@@ -33,9 +31,9 @@ function calcRank({
       ACTIVATOR_QSOS_WEIGHT * exponential_cdf(activatorQSOs / ACTIVATOR_QSOS_MEDIAN) +
       HUNTER_QSOS_WEIGHT * exponential_cdf(hunterQSOs / HUNTER_QSOS_MEDIAN) +
       ACTIVATOR_PARKS_WEIGHT * exponential_cdf(activatorParks / ACTIVATOR_PARKS_MEDIAN) +
-      HUNTER_PARKS_WEIGHT * exponential_cdf(hunterParks / HUNTER_PARKS_MEDIAN) /
-      TOTAL_WEIGHT
-    )
+      HUNTER_PARKS_WEIGHT * exponential_cdf(hunterParks / HUNTER_PARKS_MEDIAN)) /
+      TOTAL_WEIGHT;
+    
 
   const level = LEVELS[THRESHOLDS.findIndex((t) => rank * 100 <= t)];
 

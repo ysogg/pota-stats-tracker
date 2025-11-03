@@ -172,6 +172,16 @@ const renderStatsCard = (statsobj, options ={}) => {
     label: "Hunter QSOs",
     id: "hunterQSOs",
   }
+  STATS.activatorParks = {
+    value: stats.activator.parks,
+    label: "Activator Parks",
+    id: "activatorParks",
+  }
+  STATS.hunterParks = {
+    value: stats.hunter.parks,
+    label: "Hunter Parks",
+    id: "hunterParks",
+  }
 
   const cssStyles = getStyles();
   
@@ -234,17 +244,18 @@ const renderStatsCard = (statsobj, options ={}) => {
 
   if (view == "default") {
     const rank = new Rank({
+      stats: stats,
+      metric: "All",
       width: width,
       paddingX: 280,
       paddingY: 48,
       rank: "A",
       colour: "black",
-      percentage: 200, //
     });
 
     return card.render(`
       <svg x="0" y="0">
-        ${rank.render(``)};
+        ${rank.render()};
         ${content}
         ${tiers}
       </svg>

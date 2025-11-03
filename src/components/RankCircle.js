@@ -1,21 +1,21 @@
+import { calcRank } from "./calcRank.js"
+
 class Rank {
   constructor({
+    stats,
+    metric,
     width = 300,
     height = 100,
     paddingX = 25,
     paddingY = 35,
-    rank,
-    metric,
-    percentage,
     colour,
   }) {
+    this.stats = stats;
+    this.metric = metric;
     this.width = width;
     this.height = height;
     this.paddingX = paddingX;
     this.paddingY = paddingY;
-    this.rank = rank;
-    this.metric = metric;
-    this.percentage = percentage;
     this.colour = colour;
 
     this.css = "";
@@ -25,8 +25,30 @@ class Rank {
     this.css = value;
   }
 
+  #calcCircleProgress(value) {
+    const radius = 40;
+    const c = Math.PI * (radius * 2);
 
-  render(body) {
+    if (value < 0) {
+      value = 0;
+    }
+    if (value > 100) {
+      value = 100;
+    }
+
+    return ((100 - value) / 100) * c;
+  }
+
+  render() {
+    const rank = calcRank({
+      activations: this.stats.activator.activations,
+      activatorQSOs: this.stats.activator.qsos,
+      hunterQSOs: this.stats.hunter.qsos,
+      activatorParks: this.stats.activator.parks,
+      hunterParks: this.stats.hunter.parks,
+    });
+    const progress = 100 - rank.percentile;
+
     return `
       <svg
         width="${this.width}"
@@ -52,7 +74,7 @@ class Rank {
             transform-origin: 10px 8px;
             transform: rotate(-90deg);
             //animation: rankAnimation 1s forwards ease-in-out;
-            stroke-dashoffset: ${this.percentage};
+            stroke-dashoffset: ${this.#calcCircleProgress(progress)};
           }
           ${this.css}
         </style>
@@ -62,7 +84,7 @@ class Rank {
           <circle class="outerCircle" cx="10" cy="8" r="40"/>
           <circle class="innerCircle" cx="10" cy="8" r="40"/>
           <g class="rank">
-            ${this.rank}
+            ${rank.level}
           </g>
         </g>
       </svg>
