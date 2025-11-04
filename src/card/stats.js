@@ -1,9 +1,10 @@
 import { Card } from "../components/Card.js"
 import { Rank } from "../components/RankCircle.js"
-import { formatTiers } from "./cardUtils.js"
+import { formatTiers, clamp } from "./cardUtils.js"
 
-const DEFAULT_WIDTH = 467;
-const DEFAULT_HEIGHT = 170;
+const DEFAULT_WIDTH = 450;
+const DEFAULT_HEIGHT = 215;
+const MIN_HEIGHT = 150;
 const ICON_PADDING = 22;
 const DEFAULT_PADDING = 0;
 
@@ -191,6 +192,22 @@ const renderStatsCard = (statsobj, options ={}) => {
   if (view == "simple") {
     width = 380;
     height = 150;
+  } else {
+    if (show_tiers == true) {
+      width = 467
+    }
+
+    //Check that entries in hide array are valid (probably a better way to do this)
+    let len = 0
+    for (const el of hide) {
+      Object.entries(STATS).forEach(([keys,ent]) => {
+        if (el == ent.id) len++;
+      })
+    }
+
+    for (let i = 0; i < len; i++) {
+      height = clamp(height -= 25, MIN_HEIGHT, DEFAULT_HEIGHT);
+    }
   }
 
   let tiers = ``;
@@ -198,14 +215,6 @@ const renderStatsCard = (statsobj, options ={}) => {
       tiers = formatTiers({awards: stats.awards, view: view});
       padding = ICON_PADDING;
   }
-
-  const card = new Card({
-    width: width,
-    height: height,
-    title: callsign,
-  });
-
-  card.setCSS(cssStyles);
 
   const mapStats = () => {
     const rows = Object.keys(STATS)
@@ -225,6 +234,14 @@ const renderStatsCard = (statsobj, options ={}) => {
       });
     return rows;
   }
+
+  const card = new Card({
+    width: width,
+    height: height,
+    title: callsign,
+  });
+
+  card.setCSS(cssStyles);
   
   let content = view == "default" ? 
     mapStats() : 
@@ -247,8 +264,9 @@ const renderStatsCard = (statsobj, options ={}) => {
       stats: stats,
       metric: "All",
       width: width,
-      paddingX: 280,
-      paddingY: 48,
+      height: height,
+      paddingX: show_tiers == true ? 327 : 310,
+      paddingY: (height/2)-30,
       rank: "A",
       colour: "black",
     });

@@ -27,7 +27,7 @@ class Card {
         xmlns="http://www.w3.org/2000/svg"
         role="img"
       >
-        <title id="title">${this.title}</title>
+        <title id="title">${this.title}'s POTA Stats</title>
         <style>
           .header {
             font: 600 18px 'Segoe UI', Ubuntu, Sans-Serif;
@@ -47,7 +47,7 @@ class Card {
 
         
         <g transform="translate(${this.paddingX}, ${this.paddingY})">
-          <text x="0" y="0" class="header">${this.title}</text>
+          <text x="0" y="0" class="header">${this.title}'s POTA Stats</text>
         </g>
 
         <g transform="translate(${this.paddingX}, 35)">
