@@ -54,30 +54,30 @@ const createTextNode = ({
   } else if (view == "simple") {
     let header = `
         <g class="row" style="font-size: 12px" transform="translate(0, 0)"> 
-          <text x="120" y="12.5">Activator</text>
-          <text x="260" y="12.5">Hunter</text>
-          <line x1="0" y1="17" x2="310" y2="17" style="stroke:gray;stroke-width:1" />
+          <text x="120" y="18">Activator</text>
+          <text x="260" y="18">Hunter</text>
+          <line x1="0" y1="22" x2="310" y2="22" style="stroke:gray;stroke-width:1" />
         </g>
       `;
     
     return `
       ${header}
-      <g class="row" transform="translate(0,20)"> 
-          <text x="0" y="12.5">Activations</text>
-          <text x="120" y="12.5">${activations} / ${attemptedActivations}</text>
-          <text x="260" y="12.5">---</text>
+      <g class="row" transform="translate(0,25)"> 
+          <text x="0" y="15">Activations</text>
+          <text x="120" y="15">${activations} / ${attemptedActivations}</text>
+          <text x="260" y="15">---</text>
         </g>
-      <g class="row" transform="translate(0,40)">
+      <g class="row" transform="translate(0,50)">
         <line x1="0" y1="-2" x2="310" y2="-2" style="stroke:gray;stroke-width:1" />
-        <text x="0" y="12.5">Parks</text>
-        <text x="120" y="12.5">${activatorParks} / ${attemptedParks}</text>
-        <text x="260" y="12.5">${hunterParks}</text>
+        <text x="0" y="15">Parks</text>
+        <text x="120" y="15">${activatorParks} / ${attemptedParks}</text>
+        <text x="260" y="15">${hunterParks}</text>
       </g>
-      <g class="row" transform="translate(0,60)">
+      <g class="row" transform="translate(0,75)">
         <line x1="0" y1="-2" x2="310" y2="-2" style="stroke:gray;stroke-width:1" />
-        <text x="0" y="12.5">QSOs</text>
-        <text x="120" y="12.5">${activatorQSOs} / ${attemptedQSOs}</text>
-        <text x="260" y="12.5">${hunterQSOs}</text>
+        <text x="0" y="15">QSOs</text>
+        <text x="120" y="15">${activatorQSOs} / ${attemptedQSOs}</text>
+        <text x="260" y="15">${hunterQSOs}</text>
       </g>
     `;
   } else {
@@ -267,7 +267,6 @@ const renderStatsCard = (statsobj, options ={}) => {
       height: height,
       paddingX: show_tiers == true ? 327 : 310,
       paddingY: (height/2)-30,
-      rank: "A",
       colour: "black",
     });
 
