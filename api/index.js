@@ -21,6 +21,7 @@ export default async (req, res) => {
     callsign,
     view,
     hide,
+    theme,
     card_width,
     card_height,
     show_tiers,
@@ -40,6 +41,7 @@ export default async (req, res) => {
     renderStatsCard(stats, {
       view: view || "default",
       hide: parseArray(hide),
+      theme: theme,
       card_width: card_width,
       card_height: card_height,
       show_tiers: parseBool(show_tiers),

@@ -1,6 +1,7 @@
 import { Card } from "../components/Card.js"
 import { Rank } from "../components/RankCircle.js"
 import { formatTiers, clamp } from "./cardUtils.js"
+import { getStyles } from "./themes.js"
 
 const DEFAULT_WIDTH = 450;
 const DEFAULT_HEIGHT = 215;
@@ -121,13 +122,6 @@ const createDefaultTextNode = ({
   `;
 }
 
-const getStyles =() => {
-  return `
-    .row {
-      font: 600 14px 'Segoe UI', Ubuntu, "Helvetica Neue", Sans-Serif;
-    }
-  `;
-}
 
 const renderStatsCard = (statsobj, options ={}) => {
   const {
@@ -140,6 +134,7 @@ const renderStatsCard = (statsobj, options ={}) => {
   const {
     view,
     hide = [],
+    theme,
     card_width,
     card_height,
     show_tiers,
@@ -184,7 +179,7 @@ const renderStatsCard = (statsobj, options ={}) => {
     id: "hunterParks",
   }
 
-  const cssStyles = getStyles();
+  const cssStyles = getStyles(theme);
   
   let width = DEFAULT_WIDTH;
   let height = DEFAULT_HEIGHT;
